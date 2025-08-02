@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,13 +15,32 @@
     CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
     -->
     <style>
+        :root {
+            --bg-color: #f8f7f4;
+            --text-color: #3a3a3a;
+            --card-bg: #ffffff;
+            --header-text: #1f2937;
+            --muted-text: #6b7280;
+            --accent-color: #4f46e5;
+            --highlight-bg: #eef2ff;
+            --highlight-border: #6366f1;
+        }
+        html.dark {
+            --bg-color: #111827;
+            --text-color: #d1d5db;
+            --card-bg: #1f2937;
+            --header-text: #f9fafb;
+            --muted-text: #9ca3af;
+            --highlight-bg: #3730a3;
+        }
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif;
-            background-color: #f8f7f4;
-            color: #3a3a3a;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .timeline-item-title.active {
-            color: #4f46e5;
+            color: var(--accent-color);
         }
         .timeline-content {
             transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
@@ -36,8 +55,25 @@
             transform: translateY(0);
         }
         .achievement-card {
-            background-color: #eef2ff;
-            border-left: 4px solid #6366f1;
+            background-color: var(--highlight-bg);
+            border-left: 4px solid var(--highlight-border);
+        }
+        .card {
+            background-color: var(--card-bg);
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -45,53 +81,57 @@
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
 
-        <header class="text-center mb-16">
-            <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-gray-800">鄒 浩鵬</h1>
-            <p class="mt-3 text-lg sm:text-xl text-gray-600">ソフトウェアエンジニア | クラウド & CI/CD</p>
+        <header class="text-center mb-16 relative">
+            <h1 class="text-4xl sm:text-5xl font-bold tracking-tight" style="color: var(--header-text);">鄒 浩鵬</h1>
+            <p class="mt-3 text-lg sm:text-xl" style="color: var(--muted-text);">ソフトウェアエンジニア | クラウド & CI/CD</p>
+            <button id="theme-toggle" class="absolute top-0 right-0 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" style="color: var(--muted-text);">
+                <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+            </button>
         </header>
 
         <main>
-            <section id="summary" class="max-w-3xl mx-auto mb-16">
-                <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">要約</h2>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <p class="text-base leading-relaxed text-gray-600">
+            <section id="summary" class="max-w-3xl mx-auto mb-16 fade-in-section">
+                <h2 class="text-2xl font-bold text-center mb-6" style="color: var(--header-text);">要約</h2>
+                <div class="card p-6 rounded-lg shadow-sm">
+                    <p class="text-base leading-relaxed" style="color: var(--muted-text);">
                         AWSクラウド環境を基盤としたWebアプリケーション開発を得意とするソフトウェアエンジニア。3年以上の経験を通じ、レガシーシステムの改善、CI/CDパイプラインの導入、サーバーレス技術の活用などに貢献。特に、システムのパフォーマンス最適化と開発プロセスの効率化において具体的な実績を上げてきました。技術力を通じて事業の成長に貢献します。
                     </p>
                 </div>
             </section>
 
-            <section id="experience" class="max-w-4xl mx-auto mb-16">
-                <h2 class="text-2xl font-bold text-center mb-12 text-gray-700">職務経歴</h2>
+            <section id="experience" class="max-w-4xl mx-auto mb-16 fade-in-section">
+                <h2 class="text-2xl font-bold text-center mb-12" style="color: var(--header-text);">職務経歴</h2>
                 <div class="relative">
-                    <div class="absolute left-4 sm:left-1/2 top-0 h-full w-0.5 bg-gray-200"></div>
-                    <div id="timeline-container" class="space-y-12">
+                    <div class="absolute left-4 sm:left-1/2 top-0 h-full w-0.5 bg-gray-200 dark:bg-gray-700 -translate-x-px"></div>
+                    <div id="timeline-container" class="space-y-8">
                         
-                        <div class="timeline-item">
-                            <div class="flex items-center sm:grid sm:grid-cols-2">
-                                <div class="flex sm:justify-end sm:pr-8">
-                                    <div class="w-8 h-8 bg-white border-2 border-gray-300 rounded-full absolute left-4 -translate-x-1/2 sm:relative sm:left-auto sm:translate-x-1/2"></div>
-                                    <p class="ml-12 sm:ml-6 sm:mt-1 sm:text-right text-sm font-medium text-gray-500">2024年09月 - 2025年08月</p>
+                        <div class="timeline-item relative">
+                            <div class="w-8 h-8 border-2 rounded-full absolute top-0 left-4 sm:left-1/2 -translate-x-1/2" style="background-color: var(--bg-color); border-color: var(--muted-text);"></div>
+                            <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2 sm:gap-x-8">
+                                <div class="sm:text-right sm:pr-12">
+                                    <p class="text-sm font-medium" style="color: var(--muted-text);">2024年9月 - 2025年8月</p>
                                 </div>
-                                <div class="ml-12 sm:ml-0 sm:pl-8">
-                                    <h3 class="timeline-item-title text-lg font-semibold text-gray-800 cursor-pointer" data-target="project1">大手通信会社向けミドルウェアシステムの保守・機能拡張</h3>
+                                <div class="mt-2 sm:mt-0 sm:pl-12">
+                                    <h3 class="timeline-item-title text-lg font-semibold cursor-pointer" style="color: var(--header-text);" data-target="project1">大手通信会社向けミドルウェアシステムの保守・機能拡張</h3>
                                 </div>
                             </div>
                             <div id="project1" class="timeline-content mt-4">
-                                <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2">
-                                    <div class="sm:col-start-2 sm:pl-8">
-                                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                                            <p class="text-sm text-gray-600 mb-4">社会インフラを支えるミドルウェアシステムの安定稼働を目的とした保守および機能拡張。15名チームのシステムエンジニア（保守・開発担当）として参画。</p>
+                                <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2 sm:gap-x-8">
+                                    <div class="sm:col-start-2 sm:pl-12">
+                                        <div class="card p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                                            <p class="text-sm mb-4" style="color: var(--muted-text);">社会インフラを支えるミドルウェアシステムの安定稼働を目的とした保守および機能拡張。15名チームのシステムエンジニア（保守・開発担当）として参画。</p>
                                             <div class="mb-4">
-                                                <h4 class="font-semibold text-gray-700 mb-2">主な業務内容:</h4>
-                                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                                <h4 class="font-semibold mb-2" style="color: var(--header-text);">主な業務内容:</h4>
+                                                <ul class="list-disc list-inside text-sm space-y-1" style="color: var(--muted-text);">
                                                     <li>既存システムの保守運用、および機能拡張の設計・実装</li>
                                                     <li>Jenkinsを用いたビルド・テスト・デプロイのパイプライン運用・改善</li>
                                                     <li>Shellスクリプトを活用したログ分析や障害調査</li>
                                                 </ul>
                                             </div>
                                             <div class="achievement-card p-4 rounded-md mt-4">
-                                                <h4 class="font-semibold text-gray-800 mb-2">主な成果:</h4>
-                                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                                <h4 class="font-semibold mb-2" style="color: var(--header-text);">主な成果:</h4>
+                                                <ul class="list-disc list-inside text-sm space-y-1" style="color: var(--text-color);">
                                                     <li>Jenkinsによるテスト自動化を拡大し、不具合発生率を50%削減。</li>
                                                     <li>デプロイプロセスを改善し、リリース作業時間を平均30%短縮。</li>
                                                 </ul>
@@ -102,32 +142,32 @@
                             </div>
                         </div>
 
-                        <div class="timeline-item">
-                            <div class="flex items-center sm:grid sm:grid-cols-2">
-                                <div class="flex sm:justify-end sm:pr-8">
-                                    <div class="w-8 h-8 bg-white border-2 border-gray-300 rounded-full absolute left-4 -translate-x-1/2 sm:relative sm:left-auto sm:translate-x-1/2"></div>
-                                    <p class="ml-12 sm:ml-6 sm:mt-1 sm:text-right text-sm font-medium text-gray-500">2023年11月 - 2024年08月</p>
+                        <div class="timeline-item relative">
+                            <div class="w-8 h-8 border-2 rounded-full absolute top-0 left-4 sm:left-1/2 -translate-x-1/2" style="background-color: var(--bg-color); border-color: var(--muted-text);"></div>
+                            <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2 sm:gap-x-8">
+                                <div class="sm:text-right sm:pr-12">
+                                    <p class="text-sm font-medium" style="color: var(--muted-text);">2023年11月 - 2024年8月</p>
                                 </div>
-                                <div class="ml-12 sm:ml-0 sm:pl-8">
-                                    <h3 class="timeline-item-title text-lg font-semibold text-gray-800 cursor-pointer" data-target="project2">倉庫輸送管理システム（WMS）刷新プロジェクト</h3>
+                                <div class="mt-2 sm:mt-0 sm:pl-12">
+                                    <h3 class="timeline-item-title text-lg font-semibold cursor-pointer" style="color: var(--header-text);" data-target="project2">倉庫輸送管理システム（WMS）刷新プロジェクト</h3>
                                 </div>
                             </div>
                             <div id="project2" class="timeline-content mt-4">
-                                <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2">
-                                    <div class="sm:col-start-2 sm:pl-8">
-                                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                                            <p class="text-sm text-gray-600 mb-4">旧式のWMSをコンテナベースのモダンなアーキテクチャへ移行。8名チームのシステムエンジニア（CI/CD担当）として参画。</p>
+                                <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2 sm:gap-x-8">
+                                    <div class="sm:col-start-2 sm:pl-12">
+                                        <div class="card p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                                            <p class="text-sm mb-4" style="color: var(--muted-text);">旧式のWMSをコンテナベースのモダンなアーキテクチャへ移行。8名チームのシステムエンジニア（CI/CD担当）として参画。</p>
                                             <div class="mb-4">
-                                                <h4 class="font-semibold text-gray-700 mb-2">主な業務内容:</h4>
-                                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                                <h4 class="font-semibold mb-2" style="color: var(--header-text);">主な業務内容:</h4>
+                                                <ul class="list-disc list-inside text-sm space-y-1" style="color: var(--muted-text);">
                                                     <li>Dockerを用いたアプリケーションのコンテナ化</li>
                                                     <li>Jenkinsを利用したCI/CDパイプラインの整備と自動化推進</li>
                                                     <li>旧式SOAP APIからREST APIへの移行</li>
                                                 </ul>
                                             </div>
                                             <div class="achievement-card p-4 rounded-md mt-4">
-                                                <h4 class="font-semibold text-gray-800 mb-2">主な成果:</h4>
-                                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                                <h4 class="font-semibold mb-2" style="color: var(--header-text);">主な成果:</h4>
+                                                <ul class="list-disc list-inside text-sm space-y-1" style="color: var(--text-color);">
                                                     <li>CI/CD導入により、開発リードタイムを大幅に削減。</li>
                                                     <li>大規模な出庫依頼時の処理時間を平均で40%短縮。</li>
                                                 </ul>
@@ -138,32 +178,32 @@
                             </div>
                         </div>
 
-                        <div class="timeline-item">
-                            <div class="flex items-center sm:grid sm:grid-cols-2">
-                                <div class="flex sm:justify-end sm:pr-8">
-                                    <div class="w-8 h-8 bg-white border-2 border-gray-300 rounded-full absolute left-4 -translate-x-1/2 sm:relative sm:left-auto sm:translate-x-1/2"></div>
-                                    <p class="ml-12 sm:ml-6 sm:mt-1 sm:text-right text-sm font-medium text-gray-500">2023年04月 - 2023年10月</p>
+                        <div class="timeline-item relative">
+                            <div class="w-8 h-8 border-2 rounded-full absolute top-0 left-4 sm:left-1/2 -translate-x-1/2" style="background-color: var(--bg-color); border-color: var(--muted-text);"></div>
+                            <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2 sm:gap-x-8">
+                                <div class="sm:text-right sm:pr-12">
+                                    <p class="text-sm font-medium" style="color: var(--muted-text);">2023年4月 - 2023年10月</p>
                                 </div>
-                                <div class="ml-12 sm:ml-0 sm:pl-8">
-                                    <h3 class="timeline-item-title text-lg font-semibold text-gray-800 cursor-pointer" data-target="project3">オンラインテストシステム</h3>
+                                <div class="mt-2 sm:mt-0 sm:pl-12">
+                                    <h3 class="timeline-item-title text-lg font-semibold cursor-pointer" style="color: var(--header-text);" data-target="project3">オンラインテストシステム</h3>
                                 </div>
                             </div>
                             <div id="project3" class="timeline-content mt-4">
-                                <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2">
-                                    <div class="sm:col-start-2 sm:pl-8">
-                                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                                            <p class="text-sm text-gray-600 mb-4">バックエンドをサーバーレスアーキテクチャで再構築。6名チームのクラウド・バックエンドエンジニアとして参画。</p>
+                                <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2 sm:gap-x-8">
+                                    <div class="sm:col-start-2 sm:pl-12">
+                                        <div class="card p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                                            <p class="text-sm mb-4" style="color: var(--muted-text);">バックエンドをサーバーレスアーキテクチャで再構築。6名チームのクラウド・バックエンドエンジニアとして参画。</p>
                                             <div class="mb-4">
-                                                <h4 class="font-semibold text-gray-700 mb-2">主な業務内容:</h4>
-                                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                                <h4 class="font-semibold mb-2" style="color: var(--header-text);">主な業務内容:</h4>
+                                                <ul class="list-disc list-inside text-sm space-y-1" style="color: var(--muted-text);">
                                                     <li>AWS Lambda, API Gateway, DynamoDBを中核とした設計・実装</li>
                                                     <li>高トラフィックを想定したリアルタイム採点機能の実装</li>
                                                     <li>フロントエンド連携用のAPI仕様設計と実装</li>
                                                 </ul>
                                             </div>
                                             <div class="achievement-card p-4 rounded-md mt-4">
-                                                <h4 class="font-semibold text-gray-800 mb-2">主な成果:</h4>
-                                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                                <h4 class="font-semibold mb-2" style="color: var(--header-text);">主な成果:</h4>
+                                                <ul class="list-disc list-inside text-sm space-y-1" style="color: var(--text-color);">
                                                     <li>サーバーレス化により、インフラ維持コストを月額で大幅に削減。</li>
                                                     <li>新機能のリリースサイクルを2週間から3日へ短縮。</li>
                                                 </ul>
@@ -174,32 +214,32 @@
                             </div>
                         </div>
 
-                        <div class="timeline-item">
-                            <div class="flex items-center sm:grid sm:grid-cols-2">
-                                <div class="flex sm:justify-end sm:pr-8">
-                                    <div class="w-8 h-8 bg-white border-2 border-gray-300 rounded-full absolute left-4 -translate-x-1/2 sm:relative sm:left-auto sm:translate-x-1/2"></div>
-                                    <p class="ml-12 sm:ml-6 sm:mt-1 sm:text-right text-sm font-medium text-gray-500">2022年02月 - 2023年04月</p>
+                        <div class="timeline-item relative">
+                            <div class="w-8 h-8 border-2 rounded-full absolute top-0 left-4 sm:left-1/2 -translate-x-1/2" style="background-color: var(--bg-color); border-color: var(--muted-text);"></div>
+                            <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2 sm:gap-x-8">
+                                <div class="sm:text-right sm:pr-12">
+                                    <p class="text-sm font-medium" style="color: var(--muted-text);">2022年2月 - 2023年4月</p>
                                 </div>
-                                <div class="ml-12 sm:ml-0 sm:pl-8">
-                                    <h3 class="timeline-item-title text-lg font-semibold text-gray-800 cursor-pointer" data-target="project4">AI教育プラットフォーム（AWS移行・開発）</h3>
+                                <div class="mt-2 sm:mt-0 sm:pl-12">
+                                    <h3 class="timeline-item-title text-lg font-semibold cursor-pointer" style="color: var(--header-text);" data-target="project4">AI教育プラットフォーム（AWS移行・開発）</h3>
                                 </div>
                             </div>
                             <div id="project4" class="timeline-content mt-4">
-                                <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2">
-                                    <div class="sm:col-start-2 sm:pl-8">
-                                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                                            <p class="text-sm text-gray-600 mb-4">オンプレミス環境からAWSへの全面移行と機能開発。13名チームのシステムエンジニア（AWS移行担当）として参画。</p>
+                                <div class="ml-12 sm:ml-0 sm:grid sm:grid-cols-2 sm:gap-x-8">
+                                    <div class="sm:col-start-2 sm:pl-12">
+                                        <div class="card p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                                            <p class="text-sm mb-4" style="color: var(--muted-text);">オンプレミス環境からAWSへの全面移行と機能開発。13名チームのシステムエンジニア（AWS移行担当）として参画。</p>
                                             <div class="mb-4">
-                                                <h4 class="font-semibold text-gray-700 mb-2">主な業務内容:</h4>
-                                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                                <h4 class="font-semibold mb-2" style="color: var(--header-text);">主な業務内容:</h4>
+                                                <ul class="list-disc list-inside text-sm space-y-1" style="color: var(--muted-text);">
                                                     <li>AWS（EC2, S3, RDS）へのインフラ移行プロジェクトを推進</li>
                                                     <li>CloudFrontによる教育動画コンテンツの低遅延化を実現</li>
                                                     <li>Dockerコンテナを用いたアプリケーション実行環境の設計・構築</li>
                                                 </ul>
                                             </div>
                                             <div class="achievement-card p-4 rounded-md mt-4">
-                                                <h4 class="font-semibold text-gray-800 mb-2">主な成果:</h4>
-                                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                                <h4 class="font-semibold mb-2" style="color: var(--header-text);">主な成果:</h4>
+                                                <ul class="list-disc list-inside text-sm space-y-1" style="color: var(--text-color);">
                                                     <li>AWS移行により、インフラのTCOを年間で約30%削減。</li>
                                                     <li>海外ユーザーの動画再生開始時間を平均で50%以上短縮。</li>
                                                 </ul>
@@ -214,36 +254,36 @@
                 </div>
             </section>
 
-            <section id="skills" class="max-w-5xl mx-auto mb-16">
-                <h2 class="text-2xl font-bold text-center mb-12 text-gray-700">テクニカルスキル</h2>
+            <section id="skills" class="max-w-5xl mx-auto mb-16 fade-in-section">
+                <h2 class="text-2xl font-bold text-center mb-12" style="color: var(--header-text);">テクニカルスキル</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">☁️ クラウド</h3>
-                        <p class="text-sm text-gray-600">AWS (EC2, S3, RDS, Lambda, CloudFront, CloudWatch)</p>
+                    <div class="card p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-3" style="color: var(--header-text);">☁️ クラウド</h3>
+                        <p class="text-sm" style="color: var(--muted-text);">AWS (EC2, S3, RDS, Lambda, CloudFront, CloudWatch)</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">⚙️ インフラ自動化 & CI/CD</h3>
-                        <p class="text-sm text-gray-600">Docker, Jenkins</p>
+                    <div class="card p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-3" style="color: var(--header-text);">⚙️ インフラ自動化 & CI/CD</h3>
+                        <p class="text-sm" style="color: var(--muted-text);">Docker, Jenkins</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">💻 言語</h3>
-                        <p class="text-sm text-gray-600">Java, Shell Script, JavaScript, SQL</p>
+                    <div class="card p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-3" style="color: var(--header-text);">💻 言語</h3>
+                        <p class="text-sm" style="color: var(--muted-text);">Java, Shell Script, JavaScript, SQL</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">🔧 フレームワーク</h3>
-                        <p class="text-sm text-gray-600">Spring Boot, MyBatis, Vue.js</p>
+                    <div class="card p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-3" style="color: var(--header-text);">🔧 フレームワーク</h3>
+                        <p class="text-sm" style="color: var(--muted-text);">Spring Boot, MyBatis, Vue.js</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">💾 OS/DB</h3>
-                        <p class="text-sm text-gray-600">Linux, Windows Server, Oracle, MySQL, DynamoDB</p>
+                    <div class="card p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-3" style="color: var(--header-text);">💾 OS/DB</h3>
+                        <p class="text-sm" style="color: var(--muted-text);">Linux, Windows Server, Oracle, MySQL, DynamoDB</p>
                     </div>
                 </div>
             </section>
             
-            <section id="about" class="max-w-3xl mx-auto">
-                <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">自己PR</h2>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                     <p class="text-base leading-relaxed text-gray-600">
+            <section id="about" class="max-w-3xl mx-auto mb-16 fade-in-section">
+                <h2 class="text-2xl font-bold text-center mb-6" style="color: var(--header-text);">自己PR</h2>
+                <div class="card p-6 rounded-lg shadow-sm">
+                     <p class="text-base leading-relaxed" style="color: var(--muted-text);">
                         私は、AWS環境での開発経験を活かし、システムの改善に貢献することにやりがいを感じるソフトウェアエンジニアです。単に仕様通りに実装するだけでなく、パフォーマンスや保守性といった非機能要件を常に意識し、より良いシステムを追求することを心がけています。<br><br>
                         前職では、インフラのコード化（IaC）に携わり、手動作業によるミスを大幅に削減し、インフラの信頼性向上に貢献しました。また、サーバーレス技術を用いたプロジェクトでは、インフラコストと運用負荷の大幅な軽減を実現しました。<br><br>
                         貴社においても、これまでのクラウド環境での開発経験と問題解決スキルを活かし、システムの品質と価値の向上に貢献できるものと確信しております。
@@ -251,37 +291,103 @@
                 </div>
             </section>
 
+             <section id="contact" class="max-w-3xl mx-auto fade-in-section">
+                <h2 class="text-2xl font-bold text-center mb-6" style="color: var(--header-text);">連絡先</h2>
+                <div class="flex justify-center items-center space-x-6">
+                    <a href="mailto:example@email.com" class="card p-4 rounded-full shadow-sm flex items-center space-x-2" style="color: var(--muted-text);">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                        <span>Email</span>
+                    </a>
+                    <a href="#" class="card p-4 rounded-full shadow-sm flex items-center space-x-2" style="color: var(--muted-text);">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="#" class="card p-4 rounded-full shadow-sm flex items-center space-x-2" style="color: var(--muted-text);">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </section>
         </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <p class="text-sm" style="color: var(--muted-text);">&copy; 2025 鄒 浩鵬. All Rights Reserved.</p>
+        </footer>
 
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const timelineContainer = document.getElementById('timeline-container');
+            function setupTheme() {
+                const themeToggle = document.getElementById('theme-toggle');
+                const lightIcon = document.getElementById('theme-icon-light');
+                const darkIcon = document.getElementById('theme-icon-dark');
 
-            timelineContainer.addEventListener('click', function (e) {
-                const title = e.target.closest('.timeline-item-title');
-                if (!title) return;
+                const applyTheme = (theme) => {
+                    if (theme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                        lightIcon.classList.add('hidden');
+                        darkIcon.classList.remove('hidden');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        lightIcon.classList.remove('hidden');
+                        darkIcon.classList.add('hidden');
+                    }
+                };
 
-                const targetId = title.dataset.target;
-                const content = document.getElementById(targetId);
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                applyTheme(savedTheme);
 
-                if (!content) return;
-                
-                const isShowing = content.classList.contains('show');
-
-                document.querySelectorAll('.timeline-content.show').forEach(openContent => {
-                    openContent.classList.remove('show');
+                themeToggle.addEventListener('click', () => {
+                    const currentTheme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme', currentTheme);
+                    applyTheme(currentTheme);
                 });
-                document.querySelectorAll('.timeline-item-title.active').forEach(activeTitle => {
-                    activeTitle.classList.remove('active');
-                });
+            }
+            
+            function setupTimeline() {
+                const timelineContainer = document.getElementById('timeline-container');
+                timelineContainer.addEventListener('click', function (e) {
+                    const title = e.target.closest('.timeline-item-title');
+                    if (!title) return;
 
-                if (!isShowing) {
-                    content.classList.add('show');
-                    title.classList.add('active');
-                }
-            });
+                    const targetId = title.dataset.target;
+                    const content = document.getElementById(targetId);
+                    if (!content) return;
+                    
+                    const isShowing = content.classList.contains('show');
+
+                    document.querySelectorAll('.timeline-content.show').forEach(openContent => {
+                        if (openContent !== content) {
+                            openContent.classList.remove('show');
+                            openContent.parentElement.querySelector('.timeline-item-title').classList.remove('active');
+                        }
+                    });
+
+                    content.classList.toggle('show');
+                    title.classList.toggle('active');
+                });
+            }
+
+            function setupScrollAnimations() {
+                const sections = document.querySelectorAll('.fade-in-section');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
+            }
+            
+            setupTheme();
+            setupTimeline();
+            setupScrollAnimations();
         });
     </script>
 
